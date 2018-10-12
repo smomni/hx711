@@ -3,6 +3,7 @@ Pipfile.lock
 .pypirc
 .venv
 .tox
+venv/
 
 .idea
 __pycache__/

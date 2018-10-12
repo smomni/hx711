@@ -22,8 +22,10 @@ Just install by ```pip3 install HX711```. A basic usage example is given below:
 ```python
     #!/usr/bin/python3
     from hx711 import HX711
+    
 
     try:
+        # Use BCM numbering for pins
         hx711 = HX711(
             dout_pin=5,
             pd_sck_pin=6,
