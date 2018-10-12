@@ -52,6 +52,8 @@ class HX711:
     # this prevents from running the functions for a to long time
     min_measures = 2
     max_measures = 100
+    # maximum raw output
+    raw_output_max = 2**24
 
     def __init__(self, dout_pin, pd_sck_pin, gain=128, channel='A'):
         """
@@ -317,13 +319,14 @@ class HX711:
 
         return signed_data
 
-    def read(self) -> float:
+    def read_voltage(self, v_ref: float) -> float:
         """
         Read raw voltage from HX711.
 
+        :param v_ref: reference voltage (V)
         :return:
         """
-        return self._read()
+        return self._read() / self.raw_output_max * v_ref
 
     def get_raw_data(self, times=5):
         """
