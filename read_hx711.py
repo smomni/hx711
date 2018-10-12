@@ -13,10 +13,14 @@ parser.add_argument('--V_ref', help='Reference voltage (V) used for converting r
                     type=float, required=True)
 parser.add_argument('--scale', help='Scale factor for conversion from voltage (V) to load (N)', type=float,
                     required=True)
+parser.add_argument('--level', help='Logging level', type=str, default=logging.INFO)
 
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    # FIXME: Logging level is not set on all loggers
+    logger.info(f'Set level to {args.level}')
+    logger.setLevel(level=args.level)
     hx_kwargs = {'dout_pin': args.dout, 'pd_sck_pin': args.pd_sck, 'gain': 128, 'channel': 'A'}
     logger.info(f'Initialize HX711 with {hx_kwargs}')
     hx = HX711(**hx_kwargs)
