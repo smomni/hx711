@@ -1,14 +1,31 @@
 # -*- coding: utf-8 -*-
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    raise ImportError(
-        "You probably have to install RPi.GPIO"
-    )
 import time
 import logging
-
+from unittest.mock import MagicMock
 logger = logging.getLogger(__name__)
+try:
+    import RPi.GPIO as GPIO
+except ModuleNotFoundError:
+    logger.warning('RPi.GPIO module not found, using a mock GPIO module instead')
+    class GPIO:
+        IN = 10
+        OUT = 11
+        BOTH = 12
+        HIGH = 1
+        LOW = 0
+        IN = 10
+        OUT = 11
+        BOTH = 12
+        PUD_DOWN = 20
+        BCM = 30
+
+        input = MagicMock(return_value=LOW)
+        output = MagicMock(return_value=None)
+        setmode = MagicMock(return_value=None)
+        setup = MagicMock(return_value=None)
+        cleanup = MagicMock(return_value=None)
+        add_event_detect = MagicMock(return_value=None)
+        remove_event_detect = MagicMock(return_value=None)
 
 __author__ = """Marco Roose"""
 __email__ = 'marco.roose@gmx.de'
@@ -23,7 +40,7 @@ class ParameterValidationError(Exception):
     pass
 
 
-class HX711(object):
+class HX711:
     # definitions for the hardware
     # defaults
     _channel = "A"
@@ -241,7 +258,7 @@ class HX711(object):
         ready_counter = 0
 
         # loop until HX711 is ready
-        # halt when maximum number of tires is reached
+        # halt when maximum number of tries is reached
         while self._ready() is False:
             time.sleep(0.01)  # sleep for 10 ms before next try
             ready_counter += 1  # increment counter
@@ -300,6 +317,14 @@ class HX711(object):
 
         return signed_data
 
+    def read(self) -> float:
+        """
+        Read raw voltage from HX711.
+
+        :return:
+        """
+        return self._read()
+
     def get_raw_data(self, times=5):
         """
         do some readings and aggregate them using the defined statistics function
@@ -314,8 +339,10 @@ class HX711(object):
 
         data_list = []
         while len(data_list) < times:
+            logger.debug(f'Data list size {len(data_list)}')
             data = self._read()
-            if data not in [False, -1]:
+            logger.debug(f'Data {data}')
+            if data not in (False, -1):
                 data_list.append(data)
 
         return data_list
