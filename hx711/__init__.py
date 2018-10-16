@@ -319,6 +319,14 @@ class HX711:
 
         return signed_data
 
+    def read_decimal(self) -> int:
+        """
+        Return raw decimal data from the ADC.
+
+        :return:
+        """
+        return self._read()
+
     def read_voltage(self, v_ref: float) -> float:
         """
         Read raw voltage from HX711.
