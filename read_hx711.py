@@ -27,8 +27,11 @@ if __name__ == '__main__':
         with open(calibration_file) as f:
             calibration_data = json.load(f)
         logger.info(f'Calibration data: {calibration_data}')
-        assert 'slope' in calibration_data, f'No "slope" in {calibration_file}'
-        assert 'intercept' in calibration_data, f'No "intercept" in {calibration_file}'
+        # Convert to float
+        for key in ('slope', 'intercept'):
+            assert key in calibration_data, f'No "{key}" in {calibration_file}'
+            calibration_data[key] = float(calibration_data[key])
+        logger.debug(f'Calibration data after type conversion: {calibration_data}')
     hx_kwargs = {'dout_pin': args.dout, 'pd_sck_pin': args.pd_sck, 'gain': 128, 'channel': 'A'}
     logger.info(f'Initialize HX711 with {hx_kwargs}')
     hx = HX711(**hx_kwargs)
@@ -41,7 +44,7 @@ if __name__ == '__main__':
             if not args.convert:
                 logger.info(f'CH {hx.channel}: {decimal}')
             else:
-                load_N = calibration_data['slope']*decimal + calibration_data['intercept']
+                load_N = float(calibration_data['slope'])*decimal + float(calibration_data['intercept'])
                 logger.info(f'CH {hx.channel}: {load_N} N')
             # Pause for half a second
             time.sleep(0.5)
