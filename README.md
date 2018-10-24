@@ -9,15 +9,17 @@ Description
 -----------
 This library allows to drive a HX711 load cess amplifier with a Raspberry Pi. It just provides the capabilities:
 
-* to set channel an gain and
-* to read raw values
+* to set a channel gain,
+* to read raw values, and
+* to convert raw values to load given calibration parameters.
 
 **This package requires RPi.GPIO to be installed in Python 3.**
 
 Getting started
 ---------------
 
-Just install by ```pip3 install HX711```. A basic usage example is given below:
+Just install by ```pip3 install git+https://github.com/smomni/hx711.git@new-feature-branch```. 
+A basic usage example is given below:
 
 ```python
     #!/usr/bin/python3
@@ -41,6 +43,12 @@ Just install by ```pip3 install HX711```. A basic usage example is given below:
     print("\n".join(measures))
 ```
 
+You can also run the `read_hx711.py` script:
+
+```bash
+    python -m read_hx711
+```
+
 
 License
 -------
@@ -50,6 +58,5 @@ License
 
 Credits
 ---------
-I used https://github.com/gandalf15/HX711/ as base.
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+This is a fork of https://github.com/mpibpc-mroose/hx711/.
