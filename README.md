@@ -22,33 +22,28 @@ Just install by ```pip3 install git+https://github.com/smomni/hx711.git@new-feat
 A basic usage example is given below:
 
 ```python
-    #!/usr/bin/python3
-    from hx711 import HX711
-    
+#!/usr/bin/python3
+from hx711 import HX711
 
-    try:
-        # Use BCM numbering for pins
-        hx711 = HX711(
-            dout_pin=5,
-            pd_sck_pin=6,
-            channel='A',
-            gain=64
-        )
 
-        hx711.reset()   # Before we start, reset the HX711 (not obligate)
-        measures = hx711.get_raw_data(num_measures=3)
-    finally:
-        GPIO.cleanup()  # always do a GPIO cleanup in your scripts!
+try:
+    # Use BCM numbering for pins
+    hx711 = HX711(
+        dout_pin=5,
+        pd_sck_pin=6,
+        channel='A',
+        gain=64
+    )
 
-    print("\n".join(measures))
+    hx711.reset()   # Before we start, reset the HX711 (not obligate)
+    measures = hx711.get_raw_data(num_measures=3)
+finally:
+    GPIO.cleanup()  # always do a GPIO cleanup in your scripts!
+
+print("\n".join(measures))
 ```
 
-You can also run the `read_hx711.py` script:
-
-```bash
-    read_hx711.py
-```
-
+You can also run the `read_hx711.py` script directly from bash.
 
 License
 -------
