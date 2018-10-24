@@ -46,7 +46,7 @@ A basic usage example is given below:
 You can also run the `read_hx711.py` script:
 
 ```bash
-    python -m read_hx711
+    read_hx711.py
 ```
 
 
