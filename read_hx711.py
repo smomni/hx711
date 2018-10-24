@@ -43,10 +43,10 @@ if __name__ == '__main__':
         while True:
             decimal = hx.read_decimal()
             if not args.convert:
-                logger.info(f'CH {hx.channel}: {decimal}')
+                logger.info(f'CH{hx.channel}: {decimal}')
             else:
                 load_N = float(calibration_data['slope'])*decimal + float(calibration_data['intercept'])
-                logger.info(f'CH {hx.channel}: {load_N} N')
+                logger.info(f'CH{hx.channel}: {load_N} N')
             # Pause for half a second
             time.sleep(0.5)
     except KeyboardInterrupt:
