@@ -5,7 +5,8 @@ from unittest.mock import MagicMock
 logger = logging.getLogger(__name__)
 try:
     import RPi.GPIO as GPIO
-except ModuleNotFoundError:
+except (ModuleNotFoundError, RuntimeError):
+    # RuntimeError: This module can only be run on a Raspberry Pi!
     logger.warning('RPi.GPIO module not found, using a mock GPIO module instead')
     class GPIO:
         IN = 10
