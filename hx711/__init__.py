@@ -3,30 +3,37 @@ import time
 import logging
 from unittest.mock import MagicMock
 logger = logging.getLogger(__name__)
+
+
+class GPIOMock:
+    IN = 10
+    OUT = 11
+    BOTH = 12
+    HIGH = 1
+    LOW = 0
+    IN = 10
+    OUT = 11
+    BOTH = 12
+    PUD_DOWN = 20
+    BCM = 30
+
+    input = MagicMock(return_value=LOW)
+    output = MagicMock(return_value=None)
+    setmode = MagicMock(return_value=None)
+    setup = MagicMock(return_value=None)
+    cleanup = MagicMock(return_value=None)
+    add_event_detect = MagicMock(return_value=None)
+    remove_event_detect = MagicMock(return_value=None)
+
+
 try:
     import RPi.GPIO as GPIO
-except (ModuleNotFoundError, RuntimeError):
-    # RuntimeError: This module can only be run on a Raspberry Pi!
+except ModuleNotFoundError:
     logger.warning('RPi.GPIO module not found, using a mock GPIO module instead')
-    class GPIO:
-        IN = 10
-        OUT = 11
-        BOTH = 12
-        HIGH = 1
-        LOW = 0
-        IN = 10
-        OUT = 11
-        BOTH = 12
-        PUD_DOWN = 20
-        BCM = 30
-
-        input = MagicMock(return_value=LOW)
-        output = MagicMock(return_value=None)
-        setmode = MagicMock(return_value=None)
-        setup = MagicMock(return_value=None)
-        cleanup = MagicMock(return_value=None)
-        add_event_detect = MagicMock(return_value=None)
-        remove_event_detect = MagicMock(return_value=None)
+    GPIO = GPIOMock
+except RuntimeError:
+    logger.warning('RPi.GPIO module can only be run on a Raspberry Pi, using a mock GPIO module instead')
+    GPIO = GPIOMock
 
 __author__ = """Marco Roose"""
 __email__ = 'marco.roose@gmx.de'
