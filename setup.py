@@ -35,7 +35,6 @@ setup(
             'test': [],
             'prod': []
     },
-    scripts=['read_hx711.py'],
     entry_points={
         'console_scripts': [],
     },
